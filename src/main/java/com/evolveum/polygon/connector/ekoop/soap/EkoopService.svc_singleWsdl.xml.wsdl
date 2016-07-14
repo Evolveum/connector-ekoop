@@ -1,0 +1,292 @@
+
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="EkoopService" targetNamespace="http://tempuri.org/">
+<wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+<xs:import namespace="http://schemas.datacontract.org/2004/07/EkoopServiceProject"/>
+<xs:element name="getUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="TCKN" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/EkoopServiceProject" minOccurs="0" name="getUserResult" nillable="true" type="q1:PRL_SYS_USERS"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="enableUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="TCKN" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="enableUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="enableUserResult" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="disableUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="TCKN" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="disableUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="disableUserResult" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="listAllUsers">
+<xs:complexType>
+<xs:sequence/>
+</xs:complexType>
+</xs:element>
+<xs:element name="listAllUsersResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/EkoopServiceProject" minOccurs="0" name="listAllUsersResult" nillable="true" type="q2:ArrayOfPRL_SYS_USERS"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="createUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/EkoopServiceProject" minOccurs="0" name="obje" nillable="true" type="q3:PRL_SYS_USERS"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="createUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="createUserResult" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="updateUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/EkoopServiceProject" minOccurs="0" name="obje" nillable="true" type="q4:PRL_SYS_USERS"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="updateUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="updateUserResult" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/">
+<xs:element name="anyType" nillable="true" type="xs:anyType"/>
+<xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+<xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+<xs:element name="boolean" nillable="true" type="xs:boolean"/>
+<xs:element name="byte" nillable="true" type="xs:byte"/>
+<xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+<xs:element name="decimal" nillable="true" type="xs:decimal"/>
+<xs:element name="double" nillable="true" type="xs:double"/>
+<xs:element name="float" nillable="true" type="xs:float"/>
+<xs:element name="int" nillable="true" type="xs:int"/>
+<xs:element name="long" nillable="true" type="xs:long"/>
+<xs:element name="QName" nillable="true" type="xs:QName"/>
+<xs:element name="short" nillable="true" type="xs:short"/>
+<xs:element name="string" nillable="true" type="xs:string"/>
+<xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+<xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+<xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+<xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+<xs:element name="char" nillable="true" type="tns:char"/>
+<xs:simpleType name="char">
+<xs:restriction base="xs:int"/>
+</xs:simpleType>
+<xs:element name="duration" nillable="true" type="tns:duration"/>
+<xs:simpleType name="duration">
+<xs:restriction base="xs:duration">
+<xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+<xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+<xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:element name="guid" nillable="true" type="tns:guid"/>
+<xs:simpleType name="guid">
+<xs:restriction base="xs:string">
+<xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+</xs:restriction>
+</xs:simpleType>
+<xs:attribute name="FactoryType" type="xs:QName"/>
+<xs:attribute name="Id" type="xs:ID"/>
+<xs:attribute name="Ref" type="xs:IDREF"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://schemas.datacontract.org/2004/07/EkoopServiceProject" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/EkoopServiceProject">
+<xs:complexType name="PRL_SYS_USERS">
+<xs:sequence>
+<xs:element minOccurs="0" name="ADSOYAD" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="AKTIFMI" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="AKTIFPASIF" nillable="true" type="xs:unsignedByte"/>
+<xs:element minOccurs="0" name="ALLOWED" nillable="true" type="xs:unsignedByte"/>
+<xs:element minOccurs="0" name="CALISTIGIIL" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="CEPTEL2" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="CHANGEPASSWD" nillable="true" type="xs:boolean"/>
+<xs:element minOccurs="0" name="CREATEDATE" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="EMAILADDRESS" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="FAMILYNAME" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="GIVENNAME" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="GRUPID" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="KAYITTARIH" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="KAYITUSERID" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="LASTUPDATE" nillable="true" type="xs:dateTime"/>
+<xs:element minOccurs="0" name="LASTUPDATEUSERID" nillable="true" type="xs:int"/>
+<xs:element minOccurs="0" name="NAME" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="PASSWORD" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="PHONE" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="TCKN" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="TELEFON" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="TELEPHONENUMBER" nillable="true" type="xs:string"/>
+<xs:element minOccurs="0" name="USERID" type="xs:int"/>
+<xs:element minOccurs="0" name="USERNAME" nillable="true" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="PRL_SYS_USERS" nillable="true" type="tns:PRL_SYS_USERS"/>
+<xs:complexType name="ArrayOfPRL_SYS_USERS">
+<xs:sequence>
+<xs:element minOccurs="0" maxOccurs="unbounded" name="PRL_SYS_USERS" nillable="true" type="tns:PRL_SYS_USERS"/>
+</xs:sequence>
+</xs:complexType>
+<xs:element name="ArrayOfPRL_SYS_USERS" nillable="true" type="tns:ArrayOfPRL_SYS_USERS"/>
+</xs:schema>
+</wsdl:types>
+<wsdl:message name="IEkoopService_getUser_InputMessage">
+<wsdl:part name="parameters" element="tns:getUser"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_getUser_OutputMessage">
+<wsdl:part name="parameters" element="tns:getUserResponse"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_enableUser_InputMessage">
+<wsdl:part name="parameters" element="tns:enableUser"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_enableUser_OutputMessage">
+<wsdl:part name="parameters" element="tns:enableUserResponse"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_disableUser_InputMessage">
+<wsdl:part name="parameters" element="tns:disableUser"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_disableUser_OutputMessage">
+<wsdl:part name="parameters" element="tns:disableUserResponse"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_listAllUsers_InputMessage">
+<wsdl:part name="parameters" element="tns:listAllUsers"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_listAllUsers_OutputMessage">
+<wsdl:part name="parameters" element="tns:listAllUsersResponse"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_createUser_InputMessage">
+<wsdl:part name="parameters" element="tns:createUser"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_createUser_OutputMessage">
+<wsdl:part name="parameters" element="tns:createUserResponse"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_updateUser_InputMessage">
+<wsdl:part name="parameters" element="tns:updateUser"/>
+</wsdl:message>
+<wsdl:message name="IEkoopService_updateUser_OutputMessage">
+<wsdl:part name="parameters" element="tns:updateUserResponse"/>
+</wsdl:message>
+<wsdl:portType name="IEkoopService">
+<wsdl:operation name="getUser">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/getUser" message="tns:IEkoopService_getUser_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/getUserResponse" message="tns:IEkoopService_getUser_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="enableUser">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/enableUser" message="tns:IEkoopService_enableUser_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/enableUserResponse" message="tns:IEkoopService_enableUser_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="disableUser">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/disableUser" message="tns:IEkoopService_disableUser_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/disableUserResponse" message="tns:IEkoopService_disableUser_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="listAllUsers">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/listAllUsers" message="tns:IEkoopService_listAllUsers_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/listAllUsersResponse" message="tns:IEkoopService_listAllUsers_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="createUser">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/createUser" message="tns:IEkoopService_createUser_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/createUserResponse" message="tns:IEkoopService_createUser_OutputMessage"/>
+</wsdl:operation>
+<wsdl:operation name="updateUser">
+<wsdl:input wsaw:Action="http://tempuri.org/IEkoopService/updateUser" message="tns:IEkoopService_updateUser_InputMessage"/>
+<wsdl:output wsaw:Action="http://tempuri.org/IEkoopService/updateUserResponse" message="tns:IEkoopService_updateUser_OutputMessage"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="BasicHttpBinding_IEkoopService" type="tns:IEkoopService">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="getUser">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/getUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="enableUser">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/enableUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="disableUser">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/disableUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="listAllUsers">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/listAllUsers" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="createUser">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/createUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+<wsdl:operation name="updateUser">
+<soap:operation soapAction="http://tempuri.org/IEkoopService/updateUser" style="document"/>
+<wsdl:input>
+<soap:body use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="EkoopService">
+<wsdl:port name="BasicHttpBinding_IEkoopService" binding="tns:BasicHttpBinding_IEkoopService">
+<soap:address location="http://ekoopapp06s01.csb.local/EkoopService.svc"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
