@@ -1,2 +1,2 @@
 # connector-ekoop
-Ekoop Connector
+Polygon/ConnId connector for E-Koop
