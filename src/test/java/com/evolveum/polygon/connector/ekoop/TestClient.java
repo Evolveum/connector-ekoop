@@ -16,7 +16,9 @@
 
 package com.evolveum.polygon.connector.ekoop;
 
+import com.evolveum.polygon.connector.ekoop.service.DummyServiceImpl;
 import org.identityconnectors.common.logging.Log;
+import org.identityconnectors.framework.common.exceptions.AlreadyExistsException;
 import org.identityconnectors.framework.common.objects.*;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -38,11 +40,6 @@ public class TestClient {
     private static final Log LOG = Log.getLog(TestClient.class);
 
     static final ObjectClass ACCOUNT_OBJECT_CLASS = new ObjectClass(ObjectClass.ACCOUNT_NAME);
-
-    /**
-     * test user name
-     */
-    static final String USER_NAME = "Evolveum";
 
     /**
      * test user UID - TCKN (Turkish Citizenship Number)
@@ -80,13 +77,14 @@ public class TestClient {
     @Test
     public void testSchema() throws Exception {
         Schema schema = connector.schema();
-        LOG.info("generated schema need to compare manually with specification:\n{0}", schema);
+        LOG.ok("generated schema need to compare manually with specification:\n{0}", schema);
     }
 
     @Test
     public void testCreate() throws RemoteException {
         Set<Attribute> attributes = new HashSet<Attribute>();
 
+        String userName = "Evolveum";
         String givenName = "Test";
         String familyName = "Evolveum";
         String email = "test@evolveum.com";
@@ -95,8 +93,8 @@ public class TestClient {
         String telephoneNumber = "421903123456";
         String secondTelephoneNumber = "421903987654";
 
-        attributes.add(AttributeBuilder.build(Name.NAME, USER_NAME));
-        attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_UNIQUE_ID, USER_UID));
+        attributes.add(AttributeBuilder.build(Name.NAME, USER_UID));
+        attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_USER_NAME, userName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_GIVEN_NAME, givenName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_FAMILY_NAME, familyName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_EMAIL_ADDRESS, email));
@@ -112,8 +110,9 @@ public class TestClient {
         ConnectorObject user = getUserByUid(USER_UID);
         Assert.assertTrue(user != null, "Created user " + USER_UID + " not found");
 
-        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), USER_NAME);
+        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), USER_UID);
         Assert.assertEquals(user.getAttributeByName(Uid.NAME).getValue().get(0), USER_UID);
+        Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_USER_NAME).getValue().get(0), userName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_GIVEN_NAME).getValue().get(0), givenName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_FAMILY_NAME).getValue().get(0), familyName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_EMAIL_ADDRESS).getValue().get(0), email);
@@ -121,6 +120,33 @@ public class TestClient {
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_TELEPHONE_NUMBER).getValue().get(0), telephoneNumber);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_SECOND_TELEPHONE_NUMBER).getValue().get(0), secondTelephoneNumber);
         Assert.assertEquals(user.getAttributeByName(OperationalAttributes.ENABLE_NAME).getValue().get(0), enable);
+    }
+
+
+    @Test
+    public void testCreateAlreadyExists() throws RemoteException {
+        Set<Attribute> attributes = new HashSet<Attribute>();
+
+        String tckn = DummyServiceImpl.SAMPLE_TCKN;
+        String userName = "Evolveum";
+
+        attributes.add(AttributeBuilder.build(Name.NAME, tckn));
+        attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_USER_NAME, userName));
+        // create it
+        OperationOptions operationOptions = null;
+        ConnectorObject account = null;
+        try {
+            // account exists, AlreadyExistsException must be throwd
+            connector.create(ACCOUNT_OBJECT_CLASS, attributes, operationOptions);
+        } catch (AlreadyExistsException e) {
+            account = getUserByUid(tckn);
+        }
+
+        // read it
+        ConnectorObject user = getUserByUid(USER_UID);
+        Assert.assertTrue(user != null, "Created user " + USER_UID + " not found");
+
+        Assert.assertTrue(account != null, "user not found");
     }
 
     @Test(dependsOnMethods = {"testCreate"})
@@ -144,7 +170,7 @@ public class TestClient {
     public void testGetUser() throws RemoteException {
         ConnectorObject user = getUserByUid(USER_UID);
         Assert.assertTrue(user != null, "Find created user returns null");
-        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), USER_NAME);
+        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), USER_UID);
         Assert.assertEquals(user.getAttributeByName(Uid.NAME).getValue().get(0), USER_UID);
     }
 
@@ -156,6 +182,7 @@ public class TestClient {
             @Override
             public boolean handle(ConnectorObject connectorObject) {
                 found[0] = connectorObject;
+                LOG.ok("connectorObject: {0}", connectorObject);
                 return true; // continue
             }
         };
@@ -173,7 +200,7 @@ public class TestClient {
         Set<Attribute> attributes = new HashSet<Attribute>();
 
         String givenName = "Test v.2";
-        String renamedUserName = USER_NAME + "V2"; // rename user
+        String renamedUserName = "Evolveum" + "V2"; // rename user
         String familyName = "Evolveum v.2";
         String email = "testV2@evolveum.com";
         Boolean enable = true; // enable user
@@ -181,8 +208,9 @@ public class TestClient {
         String telephoneNumber = "421903456789";
         String secondTelephoneNumber = "421903654321";
 
-        attributes.add(AttributeBuilder.build(Name.NAME, renamedUserName));
+        attributes.add(AttributeBuilder.build(Name.NAME, USER_UID));
         attributes.add(AttributeBuilder.build(Uid.NAME, USER_UID));
+        attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_USER_NAME, renamedUserName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_GIVEN_NAME, givenName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_FAMILY_NAME, familyName));
         attributes.add(AttributeBuilder.build(EKoopConnector.ATTR_EMAIL_ADDRESS, email));
@@ -198,8 +226,9 @@ public class TestClient {
         ConnectorObject user = getUserByUid(USER_UID);
         Assert.assertTrue(user != null, "updated user " + USER_UID + " not found");
 
-        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), renamedUserName);
+        Assert.assertEquals(user.getAttributeByName(Name.NAME).getValue().get(0), USER_UID);
         Assert.assertEquals(user.getAttributeByName(Uid.NAME).getValue().get(0), USER_UID);
+        Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_USER_NAME).getValue().get(0), renamedUserName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_GIVEN_NAME).getValue().get(0), givenName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_FAMILY_NAME).getValue().get(0), familyName);
         Assert.assertEquals(user.getAttributeByName(EKoopConnector.ATTR_EMAIL_ADDRESS).getValue().get(0), email);

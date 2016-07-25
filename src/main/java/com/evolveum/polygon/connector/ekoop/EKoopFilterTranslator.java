@@ -17,12 +17,13 @@ package com.evolveum.polygon.connector.ekoop;
 
 import org.identityconnectors.common.logging.Log;
 import org.identityconnectors.framework.common.objects.Attribute;
+import org.identityconnectors.framework.common.objects.Name;
 import org.identityconnectors.framework.common.objects.Uid;
 import org.identityconnectors.framework.common.objects.filter.AbstractFilterTranslator;
 import org.identityconnectors.framework.common.objects.filter.EqualsFilter;
 
 /**
- * E-Koop Filter translator translate only EqualsFilter with attribute UID.
+ * E-Koop Filter translator translate only EqualsFilter with attribute UID & NAME (will be the same).
  * All other filters are not supported in service and are ignored.
  *
  * @author gpalos
@@ -40,7 +41,7 @@ public class EKoopFilterTranslator extends AbstractFilterTranslator<EkoopIKFilte
 
         Attribute attr = filter.getAttribute();
         LOG.ok("attr.getName:  {0}, attr.getValue: {1}", attr.getName(), attr.getValue());
-        if (Uid.NAME.equals(attr.getName())) {
+        if (Uid.NAME.equals(attr.getName()) || Name.NAME.equals(attr.getName())) {
             if (attr.getValue() != null && attr.getValue().get(0) != null) {
                 EkoopIKFilter lf = new EkoopIKFilter();
                 lf.byUid = String.valueOf(attr.getValue().get(0));

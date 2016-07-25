@@ -36,7 +36,7 @@
          <objectClass>ri:AccountObjectClass</objectClass>
          <attribute>
             <c:ref>icfs:uid</c:ref>
-            <displayName>Entry UUID/TCKN</displayName>
+            <displayName>TCKN in UID</displayName>
             <limitations>
                <access>
                   <read>true</read>
@@ -44,18 +44,24 @@
             </limitations>
          </attribute>
          <attribute>
-            <c:ref>ri:tckn</c:ref>
+            <c:ref>icfs:name</c:ref>
             <displayName>tckn</displayName>
+            <limitations>
+               <minOccurs>0</minOccurs>
+            </limitations>
             <outbound>
                <strength>strong</strength>
                <source>
-                  <c:path>employeeNumber</c:path>
+                  <c:path>extension/TCKN</c:path>
                </source>
             </outbound>
          </attribute>
          <attribute>
-            <c:ref>icfs:name</c:ref>
+            <c:ref>ri:name</c:ref>
             <displayName>NAME</displayName>
+             <limitations>
+                 <minOccurs>0</minOccurs>
+             </limitations>
             <outbound>
                <strength>strong</strength>
                <source>
@@ -92,15 +98,6 @@
             </outbound>
          </attribute>
          <attribute>
-            <c:ref>ri:familyName</c:ref>
-            <outbound>
-               <strength>strong</strength>
-               <source>
-                  <c:path>familyName</c:path>
-               </source>
-            </outbound>
-         </attribute>
-         <attribute>
             <c:ref>ri:telephoneNumber</c:ref>
             <outbound>
                <strength>strong</strength>
@@ -122,33 +119,16 @@
          </attribute>
          <activation>
             <administrativeStatus>
-               <outbound/>
+               <outbound>
+                  <strength>strong</strength>
+                  <expression>
+                     <asIs/>
+                  </expression>
+               </outbound>
             </administrativeStatus>
          </activation>
       </objectType>
    </schemaHandling>
-   <capabilities>
-      <cachingMetadata>
-         <retrievalTimestamp>2016-07-08T14:31:37.041+02:00</retrievalTimestamp>
-         <serialNumber>18c3e08a8b4e0730-3a423b68c42fc767</serialNumber>
-      </cachingMetadata>
-      <native xmlns:cap="http://midpoint.evolveum.com/xml/ns/public/resource/capabilities-3">
-         <cap:addRemoveAttributeValues/>
-         <cap:activation>
-            <cap:status/>
-         </cap:activation>
-         <cap:testConnection/>
-         <cap:create/>
-         <cap:read/>
-         <cap:update/>
-         <cap:delete/>
-         <cap:script>
-            <cap:host>
-               <cap:type>connector</cap:type>
-            </cap:host>
-         </cap:script>
-      </native>
-   </capabilities>
    <synchronization>
       <objectSynchronization>
          <name>PLR Sys Users sync</name>
@@ -158,10 +138,10 @@
          <enabled>true</enabled>
          <correlation>
             <q:equal>
-               <q:matching>polyStringNorm</q:matching>
-               <q:path>c:name</q:path>
+               <q:path>c:extension/TCKN</q:path>
                <expression>
-                  <c:path>$account/attributes/icfs:name</c:path>
+                  <c:path>$account/attributes/uid</c:path>
+
                </expression>
             </q:equal>
          </correlation>
@@ -187,24 +167,24 @@
          -->
          <reaction>
             <situation>linked</situation>
-            <synchronize>true</synchronize>
+            <action>
+               <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#modifyUser</handlerUri>
+            </action>
          </reaction>
          <reaction>
             <situation>deleted</situation>
-            <synchronize>true</synchronize>
             <action>
-               <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#unlink</handlerUri>
+               <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#unlinkAccount</handlerUri>
             </action>
          </reaction>
          <reaction>
             <situation>unlinked</situation>
             <action>
-               <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#link</handlerUri>
+               <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#linkAccount</handlerUri>
             </action>
          </reaction>
          <reaction>
             <situation>unmatched</situation>
-            <synchronize>true</synchronize>
             <action>
                <handlerUri>http://midpoint.evolveum.com/xml/ns/public/model/action-3#addFocus</handlerUri>
             </action>

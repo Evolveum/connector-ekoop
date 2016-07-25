@@ -32,9 +32,10 @@ public class DummyServiceImpl implements Service {
 
     private static final Map<String, PRL_SYS_USERS> users = new HashMap<String, PRL_SYS_USERS>();
 
+    public static final String SAMPLE_TCKN = "11111";
+
     static {
         // one sample user in dummy resource.
-        String tckn = "11111";
         PRL_SYS_USERS su = new PRL_SYS_USERS();
         su.setAKTIFMI(EKoopConnector.DISABLED);
         su.setCALISTIGIIL("locality");
@@ -43,10 +44,25 @@ public class DummyServiceImpl implements Service {
         su.setFAMILYNAME("familyName");
         su.setGIVENNAME("givenName");
         su.setNAME("userName");
-        su.setTCKN(tckn);
+        su.setTCKN(SAMPLE_TCKN);
         su.setTELEPHONENUMBER("telephoneNumber");
 
-        users.put(tckn, su);
+        users.put(SAMPLE_TCKN, su);
+
+        // one sample user in dummy resource without tckn (will be filtered in connector).
+        String tckn2 = "";
+        PRL_SYS_USERS su2 = new PRL_SYS_USERS();
+        su2.setAKTIFMI(EKoopConnector.DISABLED);
+        su2.setCALISTIGIIL("locality 2");
+        su2.setCEPTEL2("secondPhoneNumber 2");
+        su2.setEMAILADDRESS("email2@evolveum.com");
+        su2.setFAMILYNAME("familyName 2");
+        su2.setGIVENNAME("givenName 2");
+        su2.setNAME("userName 2");
+        su2.setTCKN(tckn2);
+        su2.setTELEPHONENUMBER("telephoneNumber 2");
+
+        users.put(tckn2, su2);
     }
 
     @Override
@@ -55,7 +71,7 @@ public class DummyServiceImpl implements Service {
             return users.get(tckn);
         }
 
-        return null;
+        throw new RemoteException(EKoopConnector.NOT_EXISTS_MESSAGE);
     }
 
     @Override
