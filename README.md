@@ -1,2 +1,3 @@
-# connector-ekoop
-Polygon/ConnId connector for E-Koop
+# ConnId connector for E-Koop
+
+This connector is no longer maintained.
